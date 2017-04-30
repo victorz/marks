@@ -9,7 +9,8 @@ export MARKPATH=${MARKPATH:-$HOME/.marks}
 function to {
     [[ -z "$1" ]] && cd && return
     [[ -d "$1" || "$1" == "-" ]] && cd "$1" && return
-    cd -P "$MARKPATH/$1" 2> /dev/null || echo "$0: no such mark or directory: $1" 1>&2
+    cd -P "$MARKPATH/$1" 2> /dev/null || \
+        echo "$0: no such mark or directory: $1" 1>&2
 }
 
 # Save a mark.
