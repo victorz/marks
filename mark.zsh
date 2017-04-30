@@ -29,9 +29,19 @@ function mark {
     fi
 }
 
-# Remove a mark, but confirm with the user first (-i for interactive).
+# Remove one or more marks.
 function rmmark {
-    \rm -i "$MARKPATH/$1"
+    [[ $# -eq 0 ]] && echo "usage: $0 MARK..." 1>&2 && return
+
+    for mark in "$@"
+    do
+        if [[ ! -e $MARKPATH/$mark ]]
+        then
+            echo "$0: no such mark: $mark" 1>&2
+        else
+            \rm $MARKPATH/$mark && echo "removed mark: $mark"
+        fi
+    done
 }
 
 # List all marks and which directory they each reference.
