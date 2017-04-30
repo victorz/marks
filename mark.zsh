@@ -53,7 +53,7 @@ function marks {
 
     for mark in "${marks[@]}"
     do
-        echo -e $(basename "$mark") '\t->' $(readlink "$mark")
+        echo $(basename "$mark") '->' $(readlink "$mark")
     done
 }
 
