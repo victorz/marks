@@ -1,6 +1,6 @@
 #!/usr/bin/zsh
 
-export MARKPATH=$HOME/.marks
+export MARKPATH=${MARKPATH:-$HOME/.marks}
 
 # Jump *to* a mark.
 # No argument is the same as `cd`.
