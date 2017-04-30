@@ -1,6 +1,6 @@
 #!/usr/bin/zsh
 
-export MARKPATH=${MARKPATH:-$HOME/.marks}
+export MARKSPATH=${MARKSPATH:-$HOME/.marks}
 
 # Jump *to* a mark.
 # No argument is the same as `cd`.
@@ -9,7 +9,7 @@ export MARKPATH=${MARKPATH:-$HOME/.marks}
 function to {
     [[ -z "$1" ]] && cd && return
     [[ -d "$1" || "$1" == "-" ]] && cd "$1" && return
-    cd -P "$MARKPATH/$1" 2> /dev/null || \
+    cd -P "$MARKSPATH/$1" 2> /dev/null || \
         echo "$0: no such mark or directory: $1" 1>&2
 }
 
@@ -22,15 +22,15 @@ function mark {
     src_dir=${src_dir:-$PWD}
     local mark_name=${2:-${1:-$(basename "$src_dir")}}
 
-    if [[ -e "$MARKPATH/$mark_name" ]]
+    if [[ -e "$MARKSPATH/$mark_name" ]]
     then
         echo "$0: mark exists: $mark_name" 1>&2
     elif [[ -d "$src_dir" ]]
     then
         echo "new mark: $mark_name -> $src_dir"
 
-        \mkdir -p "$MARKPATH"
-        \ln -s "$src_dir" "$MARKPATH/$mark_name"
+        \mkdir -p "$MARKSPATH"
+        \ln -s "$src_dir" "$MARKSPATH/$mark_name"
     else
         echo "$0: not a directory: $src_dir" 1>&2
     fi
@@ -42,11 +42,11 @@ function rmmark {
 
     for mark in "$@"
     do
-        if [[ ! -e $MARKPATH/$mark ]]
+        if [[ ! -e $MARKSPATH/$mark ]]
         then
             echo "$0: no such mark: $mark" 1>&2
         else
-            \rm $MARKPATH/$mark && echo "removed mark: $mark"
+            \rm $MARKSPATH/$mark && echo "removed mark: $mark"
         fi
     done
 }
@@ -55,7 +55,7 @@ function rmmark {
 function marks {
     setopt localoptions nullglob
 
-    local marks=("$MARKPATH"/*)
+    local marks=("$MARKSPATH"/*)
     [[ ${#marks} -eq 0 ]] && echo "No bookmarks." && return
 
     for mark in "${marks[@]}"
@@ -70,7 +70,7 @@ function marks {
 function complete_marks {
     setopt localoptions nullglob
 
-    for m in "$MARKPATH"/*
+    for m in "$MARKSPATH"/*
     do
         reply+=($(basename "$m"))
     done
