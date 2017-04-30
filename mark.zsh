@@ -15,17 +15,23 @@ function to {
 # Save a mark.
 # Zero arguments marks the current directory.
 # One argument gives it a name (perhaps different from the mark's basename).
-# With two arguments, the second argument explicitly specifies the directory.
+# With two arguments, the first argument explicitly specifies the directory.
 function mark {
-    local mark_name="$1"
-    local src_dir="${2:-$PWD}"
+    local src_dir=${2:+$(realpath $1)}
+    src_dir=${src_dir:-$PWD}
+    local mark_name=${2:-${1:-$(basename "$src_dir")}}
 
-    if [[ -d "$src_dir" ]]
+    if [[ -e "$MARKPATH/$mark_name" ]]
     then
+        echo "$0: mark exists: $mark_name" 1>&2
+    elif [[ -d "$src_dir" ]]
+    then
+        echo "new mark: $mark_name -> $src_dir"
+
         \mkdir -p "$MARKPATH"
         \ln -s "$src_dir" "$MARKPATH/$mark_name"
     else
-        echo "Not a directory: $1" 1>&2
+        echo "$0: not a directory: $src_dir" 1>&2
     fi
 }
 
