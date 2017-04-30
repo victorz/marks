@@ -59,6 +59,7 @@ function marks {
 
 # Completion function for the `to` and `rmmark` commands.
 # TODO: complete second argument as subdirectory of mark.
+# TODO: complete regular expressions?
 function complete_marks {
     setopt localoptions nullglob
 
@@ -70,5 +71,6 @@ function complete_marks {
 
 # Add marks completion to commands `to` and `rmmark`.
 # TODO: use new completion system instead of old one.
-compctl -K _marks to
-compctl -K _marks rmmark
+# TODO: use directory completion for second argument of `mark` command.
+compctl -K complete_marks to
+compctl -K complete_marks rmmark
